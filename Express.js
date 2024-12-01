@@ -8,13 +8,13 @@ const path = require('path');
 const app = express();
 const PORT = process.env.PORT || 4000;
 
-// Middleware to handle CORS and JSON request bodies
+// Middleware
 app.use(cors());
 app.use(express.json());
 
-// Serve static files from the specified directory
-const fullStackDevelopmentPath = 'C:\\Users\\iskre\\OneDrive\\Desktop\\Full Stack Development';
-app.use(express.static(fullStackDevelopmentPath));
+// directory can differ depending on where exoress.js is 
+app.use(express.static(path.join(__dirname, '..', '..', 'Full Stack Development'))); // Navigate to the parent directory
+// MongoDB connection string
 
 // Logger middleware
 app.use((req, res, next) => {
@@ -22,13 +22,11 @@ app.use((req, res, next) => {
     console.log(`[${currentTime}] ${req.method} request to ${req.url}`);
     next(); // Call the next middleware in the stack
 });
-// MongoDB connection string
 const mongoURI = 'mongodb+srv://ii209:ii209@fullstackiskrenivanov.v1vgx.mongodb.net/?retryWrites=true&w=majority';
-console.log('Website Loaded')
 
 // Create a MongoDB client
 let client;
-// MongoDB connection string for connecting to the database
+
 // Connect to MongoDB
 MongoClient.connect(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true })
     .then((connection) => {
@@ -40,10 +38,8 @@ MongoClient.connect(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true 
     });
 
 // API Endpoints
-// Extract data from the request body
 // POST endpoint to save cart data
 app.post('/api/cart', async (req, res) => {
-    // Extract user and cart item details from the request body
   const { userName, userPhone, userAddress, items } = req.body;
 
   try {
@@ -56,7 +52,6 @@ app.post('/api/cart', async (req, res) => {
 
       await client.collection('Cart').insertOne(cartData); // Insert the cart data into the Cart collection
       res.status(201).send({ message: 'Cart saved successfully!' });
-      // Catch block for handling errors during cart saving
   } catch (error) {
       console.error('Error saving cart:', error);
       res.status(500).send({ message: 'Error saving cart', error });
@@ -67,13 +62,13 @@ app.post('/api/cart', async (req, res) => {
 app.get('/api/subjects', async (req, res) => {
     try {
         const subjects = await client.collection('Subjects').find().toArray();
+        console.log('Fetched subjects:', subjects); // Log the fetched subjects
         res.json(subjects);
     } catch (error) {
         console.error('Error fetching subjects:', error);
         res.status(500).send('Error fetching subjects');
     }
 });
-
 // Get all user info
 app.get('/api/userinfo', async (req, res) => {
     try {
@@ -125,7 +120,6 @@ app.put('/api/subjects/inventory/:id', async (req, res) => {
             { id: parseInt(id) }, // Use the custom 'id' field, convert to integer
             { $set: { inventory: inventory } } // Set the new inventory value
         );
-        console.log('new inv value set')
 
         if (result.modifiedCount === 1) {
             res.status(200).send({ message: 'Inventory updated successfully!' });
