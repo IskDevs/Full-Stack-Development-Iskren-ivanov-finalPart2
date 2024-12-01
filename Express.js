@@ -69,6 +69,17 @@ app.get('/api/cart', async (req, res) => {
         res.status(500).send('Error fetching cart items');
     }
 });
+app.post('/api/cart', async (req, res) => {
+    const { userName, userPhone, userAddress, items } = req.body;
+    const newCart = new Cart({ userName, userPhone, userAddress, items });
+  
+    try {
+        await newCart.save();
+        res.status(201).send({ message: 'Cart saved successfully!' });
+    } catch (error) {
+        res.status(500).send({ message: 'Error saving cart', error });
+    }
+  });
 
 // Start the server
 app.listen(PORT, () => {
