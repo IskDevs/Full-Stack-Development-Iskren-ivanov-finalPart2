@@ -13,7 +13,9 @@ app.use(cors());
 app.use(express.json());
 
 // Serve static files from the specified directory
-const fullStackDevelopmentPath = path.resolve(__dirname, '..', '..', '..', 'Full Stack Development');
+const fullStackDevelopmentPath = 'C:\\Users\\iskre\\OneDrive\\Desktop\\Full Stack Development';
+app.use(express.static(fullStackDevelopmentPath));
+
 // Logger middleware
 app.use((req, res, next) => {
     const currentTime = new Date().toISOString();
