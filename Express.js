@@ -109,6 +109,32 @@ app.post('/api/cart', async (req, res) => {
         res.status(500).send({ message: 'Error updating inventory', error: error.message }); // Send error message
     }
 });
+app.put('/api/subjects/:id', async (req, res) => {
+    const { id } = req.params; // Get the subject ID from the URL parameters
+    const updateFields = req.body; // Get the new values from the request body
+
+    // Log the ID for debugging
+    console.log("ID being passed to query:", id);
+    console.log("Update fields:", updateFields);
+
+    try {
+        // Update the subject in the database using the custom 'id' field
+        const result = await client.collection('Subjects').updateOne(
+            { id: parseInt(id) }, // Use the custom 'id' field, convert to integer
+            { $set: updateFields } // Set the new values from the request body
+        );
+
+        if (result.modifiedCount === 1) {
+            res.status(200).send({ message: 'Subject updated successfully!' });
+        } else {
+            res.status(404).send({ message: 'Subject not found or no updates were made.' });
+        }
+    } catch (error) {
+        console.error('Error updating subject:', error); // Log the error
+        res.status(500).send({ message: 'Error updating subject', error: error.message }); // Send error message
+    }
+});
+
 
 // Start the server
 app.listen(PORT, () => {
