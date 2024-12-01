@@ -11,9 +11,10 @@
     "path": "^0.12.7"
   },
   "scripts": {
-    "start": "node server.js"
+    "test":"echo \"error: no test specified\" && exit 1",
+    "start": "node Express.js"
   },
-  "main": "Server.js",
+  "main": "Express.js",
   "devDependencies": {},
   "license": "ISC",
   "description": ""
