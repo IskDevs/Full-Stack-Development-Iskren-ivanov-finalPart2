@@ -80,6 +80,35 @@ app.post('/api/cart', async (req, res) => {
         res.status(500).send({ message: 'Error saving cart', error });
     }
   });
+  app.put('/api/subjects/inventory/:id', async (req, res) => {
+    const { id } = req.params; // Get the subject ID from the URL parameters
+    const { inventory } = req.body; // Get the new inventory value from the request body
+
+    // Check if inventory is a valid number
+    if (typeof inventory !== 'number' || isNaN(inventory) || !Number.isInteger(inventory)) {
+        return res.status(400).send({ message: 'Invalid inventory value provided. It must be an integer.' });
+    }
+
+    // Log the ID for debugging
+    console.log("ID being passed to query:", id);
+
+    try {
+        // Update the inventory in the database using the custom 'id' field
+        const result = await client.collection('Subjects').updateOne(
+            { id: parseInt(id) }, // Use the custom 'id' field, convert to integer
+            { $set: { inventory: inventory } } // Set the new inventory value
+        );
+
+        if (result.modifiedCount === 1) {
+            res.status(200).send({ message: 'Inventory updated successfully!' });
+        } else {
+            res.status(404).send({ message: 'Subject not found or inventory not updated.' });
+        }
+    } catch (error) {
+        console.error('Error updating inventory:', error); // Log the error
+        res.status(500).send({ message: 'Error updating inventory', error: error.message }); // Send error message
+    }
+});
 
 // Start the server
 app.listen(PORT, () => {
