@@ -1,7 +1,7 @@
 // server.js
 
 const express = require('express');
-const { MongoClient } = require('mongodb');
+const { MongoClient, ObjectId } = require('mongodb');
 const cors = require('cors');
 const path = require('path');
 
@@ -12,10 +12,16 @@ const PORT = process.env.PORT || 4000;
 app.use(cors());
 app.use(express.json());
 
+
 app.use(express.static(path.join(__dirname, '..', '..', 'Full Stack Development'))); // Navigate to the parent directory
 // MongoDB connection string
-const mongoURI = 'mongodb+srv://ii209:ii209@fullstackiskrenivanov.v1vgx.mongodb.net/?retryWrites=true&w=majority';
 
+// Logger middleware
+app.use((req, res, next) => {
+    const currentTime = new Date().toISOString();
+    console.log(`[${currentTime}] ${req.method} request to ${req.url}`);
+    next(); // Call the next middleware in the stack
+});
 // Create a MongoDB client
 let client;
 
