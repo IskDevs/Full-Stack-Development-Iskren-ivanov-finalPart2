@@ -13,9 +13,7 @@ app.use(cors());
 app.use(express.json());
 
 // Serve static files from the specified directory
-app.use(express.static(path.join(__dirname, '..', '..', 'Full Stack Development'))); // Navigate to the parent directory
-// MongoDB connection string
-
+const fullStackDevelopmentPath = path.resolve(__dirname, '..', '..', '..', 'Full Stack Development');
 // Logger middleware
 app.use((req, res, next) => {
     const currentTime = new Date().toISOString();
