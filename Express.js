@@ -8,11 +8,11 @@ const path = require('path');
 const app = express();
 const PORT = process.env.PORT || 4000;
 
-// Middleware
+// Middleware to handle CORS and JSON request bodies
 app.use(cors());
 app.use(express.json());
 
-// directory can differ depending on where exoress.js is 
+// Serve static files from the specified directory
 app.use(express.static(path.join(__dirname, '..', '..', 'Full Stack Development'))); // Navigate to the parent directory
 // MongoDB connection string
 
@@ -22,12 +22,13 @@ app.use((req, res, next) => {
     console.log(`[${currentTime}] ${req.method} request to ${req.url}`);
     next(); // Call the next middleware in the stack
 });
+// MongoDB connection string
 const mongoURI = 'mongodb+srv://ii209:ii209@fullstackiskrenivanov.v1vgx.mongodb.net/?retryWrites=true&w=majority';
 console.log('Website Loaded')
 
 // Create a MongoDB client
 let client;
-
+// MongoDB connection string for connecting to the database
 // Connect to MongoDB
 MongoClient.connect(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true })
     .then((connection) => {
@@ -39,8 +40,10 @@ MongoClient.connect(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true 
     });
 
 // API Endpoints
+// Extract data from the request body
 // POST endpoint to save cart data
 app.post('/api/cart', async (req, res) => {
+    // Extract user and cart item details from the request body
   const { userName, userPhone, userAddress, items } = req.body;
 
   try {
@@ -53,6 +56,7 @@ app.post('/api/cart', async (req, res) => {
 
       await client.collection('Cart').insertOne(cartData); // Insert the cart data into the Cart collection
       res.status(201).send({ message: 'Cart saved successfully!' });
+      // Catch block for handling errors during cart saving
   } catch (error) {
       console.error('Error saving cart:', error);
       res.status(500).send({ message: 'Error saving cart', error });
