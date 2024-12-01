@@ -12,7 +12,7 @@ const PORT = process.env.PORT || 4000;
 app.use(cors());
 app.use(express.json());
 
-
+// directory can differ depending on where exoress.js is 
 app.use(express.static(path.join(__dirname, '..', '..', 'Full Stack Development'))); // Navigate to the parent directory
 // MongoDB connection string
 
@@ -75,7 +75,7 @@ app.get('/api/userinfo', async (req, res) => {
         const users = await client.collection('UserInfo').find().toArray();
         res.json(users);
     } catch (error) {
-        console.error('Error fetching user info:', error);
+        console.error('Error fetching user information:', error);
         res.status(500).send('Error fetching user info');
     }
 });
@@ -86,8 +86,8 @@ app.get('/api/cart', async (req, res) => {
         const carts = await client.collection('Cart').find().toArray();
         res.json(carts);
     } catch (error) {
-        console.error('Error fetching cart items:', error);
-        res.status(500).send('Error fetching cart items');
+        console.error('Error fetching cart items(cart api):', error);
+        res.status(500).send('Error fetching cart items (cart api)');
     }
 });
 
