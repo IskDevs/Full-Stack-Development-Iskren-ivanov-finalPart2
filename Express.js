@@ -23,6 +23,7 @@ app.use((req, res, next) => {
     next(); // Call the next middleware in the stack
 });
 const mongoURI = 'mongodb+srv://ii209:ii209@fullstackiskrenivanov.v1vgx.mongodb.net/?retryWrites=true&w=majority';
+console.log('Website Loaded')
 
 // Create a MongoDB client
 let client;
