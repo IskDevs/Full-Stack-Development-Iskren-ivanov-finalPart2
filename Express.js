@@ -45,9 +45,9 @@ app.post('/api/cart', async (req, res) => {
 
   try {
       const cartData = {
-          userName,
-          userPhone,
-          userAddress,
+          name,
+          phone,
+          address,
           items
       };
 
