@@ -119,8 +119,8 @@ app.put('/api/subjects/inventory/:id', async (req, res) => {
         const result = await client.collection('Subjects').updateOne(
             { id: parseInt(id) }, // Use the custom 'id' field, convert to integer
             { $set: { inventory: inventory } } // Set the new inventory value
-            console.log('new inv value set')
         );
+        console.log('new inv value set')
 
         if (result.modifiedCount === 1) {
             res.status(200).send({ message: 'Inventory updated successfully!' });
