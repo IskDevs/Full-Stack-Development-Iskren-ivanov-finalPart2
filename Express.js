@@ -22,6 +22,8 @@ app.use((req, res, next) => {
     console.log(`[${currentTime}] ${req.method} request to ${req.url}`);
     next(); // Call the next middleware in the stack
 });
+const mongoURI = 'mongodb+srv://ii209:ii209@fullstackiskrenivanov.v1vgx.mongodb.net/?retryWrites=true&w=majority';
+
 // Create a MongoDB client
 let client;
 
@@ -36,6 +38,25 @@ MongoClient.connect(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true 
     });
 
 // API Endpoints
+// POST endpoint to save cart data
+app.post('/api/cart', async (req, res) => {
+  const { userName, userPhone, userAddress, items } = req.body;
+
+  try {
+      const cartData = {
+          userName,
+          userPhone,
+          userAddress,
+          items
+      };
+
+      await client.collection('Cart').insertOne(cartData); // Insert the cart data into the Cart collection
+      res.status(201).send({ message: 'Cart saved successfully!' });
+  } catch (error) {
+      console.error('Error saving cart:', error);
+      res.status(500).send({ message: 'Error saving cart', error });
+  }
+});
 
 // Get all subjects
 app.get('/api/subjects', async (req, res) => {
@@ -69,18 +90,19 @@ app.get('/api/cart', async (req, res) => {
         res.status(500).send('Error fetching cart items');
     }
 });
+
 app.post('/api/cart', async (req, res) => {
-    const { userName, userPhone, userAddress, items } = req.body;
-    const newCart = new Cart({ userName, userPhone, userAddress, items });
-  
-    try {
-        await newCart.save();
-        res.status(201).send({ message: 'Cart saved successfully!' });
-    } catch (error) {
-        res.status(500).send({ message: 'Error saving cart', error });
-    }
-  });
-  app.put('/api/subjects/inventory/:id', async (req, res) => {
+  const { userName, userPhone, userAddress, items } = req.body;
+  const newCart = new Cart({ userName, userPhone, userAddress, items });
+
+  try {
+      await newCart.save();
+      res.status(201).send({ message: 'Cart saved successfully!' });
+  } catch (error) {
+      res.status(500).send({ message: 'Error saving cart', error });
+  }
+});
+app.put('/api/subjects/inventory/:id', async (req, res) => {
     const { id } = req.params; // Get the subject ID from the URL parameters
     const { inventory } = req.body; // Get the new inventory value from the request body
 
