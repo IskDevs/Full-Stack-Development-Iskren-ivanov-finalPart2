@@ -4,18 +4,18 @@
   "private": true,
   "version": "0.1.0",
   "dependencies": {
+    "cors": "^2.8.5",
     "express": "^4.21.1",
     "lodash": "^4.17.21",
+    "mongodb": "^6.11.0",
     "mustache": "^4.2.0",
-    "cors": "^2.8.5",
     "path": "^0.12.7"
   },
   "scripts": {
-    "test":"echo \"error: no test specified\" && exit 1",
+    "test": "echo \"error: no test specified\" && exit 1",
     "start": "node Express.js"
   },
   "main": "Express.js",
-  "devDependencies": {},
   "license": "ISC",
   "description": ""
 }
