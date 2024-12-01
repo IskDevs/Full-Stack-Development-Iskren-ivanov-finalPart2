@@ -1,0 +1,14 @@
+{
+   "name": "full-stack-iskren",
+   "author": "Iskren Ivanov",
+   "private": true,
+   "version": "0.1.0",
+   "dependencies": {
+      "express": "^4.21.1",
+      "lodash": "^4.17.21",
+      "mustache": "^4.2.0",
+      "cors": "^2.8.5",
+      "path": "^0.12.7"
+
+   }
+}
